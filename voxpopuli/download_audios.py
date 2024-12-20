@@ -5,14 +5,13 @@ import requests
 from tqdm import tqdm
 import shutil
 
+# Specify the path to the urls.txt file here
+URLS_FILE_PATH = "/urls.txt"
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--root", "-r", type=str, required=True, help="data root path"
-    )
-    parser.add_argument(
-        "--urls_file", "-u", type=str, default="urls.txt",
-        help="Path to the file containing URLs"
     )
     return parser.parse_args()
 
@@ -46,7 +45,7 @@ def download(args):
     out_root = Path(args.root) / "raw_audios"
     out_root.mkdir(exist_ok=True, parents=True)
 
-    urls_file = args.urls_file
+    urls_file = URLS_FILE_PATH
     if not os.path.exists(urls_file):
         print(f"Error: {urls_file} not found.")
         return
@@ -76,14 +75,6 @@ def download(args):
         tar_filename = Path(url).name
         tar_path = out_root / tar_filename
         extracted_folder = out_root / tar_filename.replace(".tar", "")
-
-        # Skip if the folder is already extracted
-        # if extracted_folder.exists():
-        #     print(f"Skipping {tar_filename} (already extracted)")
-        #     lines.pop(0)
-        #     with open(urls_file, "w") as f:
-        #         f.writelines(lines)
-        #     continue
 
         # Download the file
         success = download_url(url, out_root.as_posix(), tar_filename)
