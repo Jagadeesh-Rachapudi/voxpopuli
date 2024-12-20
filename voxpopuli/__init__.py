@@ -9,7 +9,8 @@ LANGUAGES = [
 ]
 LANGUAGES_V2 = [f"{x}_v2" for x in LANGUAGES]
 
-YEARS = list(range(2009, 2020 + 1))
+# Updated to download only from 2017 to 2020
+YEARS = list(range(2017, 2020 + 1))
 
 ASR_LANGUAGES = [
     "en", "de", "fr", "es", "pl", "it", "ro", "hu", "cs", "nl", "fi", "hr",
