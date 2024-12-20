@@ -1,14 +1,10 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
-#
-# This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
-
 import argparse
 import os
 from pathlib import Path
 
+import requests
 from tqdm import tqdm
-from torchaudio.datasets.utils import download_url, extract_archive
+import shutil
 
 from voxpopuli import LANGUAGES, LANGUAGES_V2, YEARS, DOWNLOAD_BASE_URL
 
@@ -24,6 +20,21 @@ def get_args():
         help="data subset to download"
     )
     return parser.parse_args()
+
+
+def download_url(url, out_dir, filename):
+    out_path = os.path.join(out_dir, filename)
+    with requests.get(url, stream=True) as response:
+        response.raise_for_status()
+        with open(out_path, 'wb') as file, tqdm(
+            desc=filename,
+            total=int(response.headers.get('content-length', 0)),
+            unit='B',
+            unit_scale=True
+        ) as progress_bar:
+            for chunk in response.iter_content(chunk_size=1024):
+                file.write(chunk)
+                progress_bar.update(len(chunk))
 
 
 def download(args):
@@ -58,7 +69,7 @@ def download(args):
     for url in tqdm(url_list):
         tar_path = out_root / Path(url).name
         download_url(url, out_root.as_posix(), Path(url).name)
-        extract_archive(tar_path.as_posix())
+        shutil.unpack_archive(tar_path.as_posix(), out_root.as_posix())
         os.remove(tar_path)
 
 
