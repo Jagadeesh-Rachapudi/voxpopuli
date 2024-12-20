@@ -12,7 +12,7 @@ def get_args():
     )
     parser.add_argument(
         "--output", "-o", type=str, default="urls.txt",
-        help="Output file to save the URLs"
+        help="Output file to save the filenames and URLs"
     )
     return parser.parse_args()
 
@@ -37,17 +37,20 @@ def generate_urls(args):
             "asr": YEARS
         }.get(args.subset, None)
 
+    # Generate the list of filenames and URLs
     url_list = []
     for l in languages:
         for y in years:
-            url_list.append(f"{DOWNLOAD_BASE_URL}/audios/{l}_{y}.tar")
+            filename = f"{l}_{y}.tar"
+            url = f"{DOWNLOAD_BASE_URL}/audios/{filename}"
+            url_list.append((filename, url))
 
-    # Save the URLs to the specified output file
+    # Save the filenames and URLs to the specified output file
     with open(args.output, "w") as f:
-        for url in url_list:
-            f.write(url + "\n")
+        for filename, url in url_list:
+            f.write(f"{filename}: {url}\n")
 
-    print(f"{len(url_list)} URLs saved to {args.output}")
+    print(f"{len(url_list)} filenames and URLs saved to {args.output}")
 
 def main():
     args = get_args()
