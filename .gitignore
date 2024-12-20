@@ -1,1 +1,4 @@
 .idea
+# Ignore the raw_audios and unlabelled_data folders
+raw_audios/
+unlabelled_data/
