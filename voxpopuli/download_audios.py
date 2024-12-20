@@ -72,27 +72,16 @@ def download(args):
         filename = filename.strip()
         url = url.strip()
 
-        tar_filename = Path(url).name
-        tar_path = out_root / tar_filename
-        extracted_folder = out_root / tar_filename.replace(".tar", "")
-
         # Download the file
-        success = download_url(url, out_root.as_posix(), tar_filename)
+        success = download_url(url, out_root.as_posix(), filename)
 
         if success:
-            try:
-                shutil.unpack_archive(tar_path.as_posix(), out_root.as_posix())
-                os.remove(tar_path)
-                print(f"Extracted and removed {tar_filename}")
-            except Exception as e:
-                print(f"Error unpacking {tar_filename}: {e}")
-
             # Remove the first line from urls.txt after successful download
             lines.pop(0)
             with open(urls_file, "w") as f:
                 f.writelines(lines)
         else:
-            print(f"Failed to download {tar_filename}. Retrying later...")
+            print(f"Failed to download {filename}. Retrying later...")
             break
 
 def main():
