@@ -66,11 +66,24 @@ def download(args):
     out_root = Path(args.root) / "raw_audios"
     out_root.mkdir(exist_ok=True, parents=True)
     print(f"{len(url_list)} files to download...")
+
     for url in tqdm(url_list):
-        tar_path = out_root / Path(url).name
-        download_url(url, out_root.as_posix(), Path(url).name)
-        shutil.unpack_archive(tar_path.as_posix(), out_root.as_posix())
-        os.remove(tar_path)
+        tar_filename = Path(url).name
+        tar_path = out_root / tar_filename
+        extracted_folder = out_root / tar_filename.replace(".tar", "")
+
+        # Check if the extracted folder or files already exist
+        if extracted_folder.exists():
+            print(f"Skipping {tar_filename} (already extracted)")
+            continue
+
+        # Download and extract if not already done
+        download_url(url, out_root.as_posix(), tar_filename)
+        try:
+            shutil.unpack_archive(tar_path.as_posix(), out_root.as_posix())
+            os.remove(tar_path)
+        except Exception as e:
+            print(f"Error unpacking {tar_filename}: {e}")
 
 
 def main():
