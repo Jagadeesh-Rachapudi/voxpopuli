@@ -6,7 +6,7 @@ from tqdm import tqdm
 import shutil
 
 # Specify the path to the urls.txt file here
-URLS_FILE_PATH = "/urls.txt"
+URLS_FILE_PATH = "../urls.txt"
 
 def get_args():
     parser = argparse.ArgumentParser()
