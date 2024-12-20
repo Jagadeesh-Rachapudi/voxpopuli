@@ -17,9 +17,9 @@ def get_args():
 
 def download_url(url, out_dir, filename):
     out_path = os.path.join(out_dir, filename)
-    if os.path.exists(out_path):
-        print(f"Skipping {filename} (already downloaded)")
-        return True
+    # if os.path.exists(out_path):
+    #     print(f"Skipping {filename} (already downloaded)")
+    #     return True
 
     try:
         with requests.get(url, stream=True) as response:
@@ -72,11 +72,9 @@ def download(args):
         filename = filename.strip()
         url = url.strip()
 
-        # Download the file
         success = download_url(url, out_root.as_posix(), filename)
 
         if success:
-            # Remove the first line from urls.txt after successful download
             lines.pop(0)
             with open(urls_file, "w") as f:
                 f.writelines(lines)
