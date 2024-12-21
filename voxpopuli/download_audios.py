@@ -19,9 +19,9 @@ def get_args():
 def download_url(url, out_dir, filename):
     out_path = os.path.join(out_dir, filename)
     # Uncomment this if you want to skip already downloaded files
-    if os.path.exists(out_path):
-        print(f"Skipping {filename} (already downloaded)")
-        return True
+    # if os.path.exists(out_path):
+    #     print(f"Skipping {filename} (already downloaded)")
+    #     return True
 
     try:
         with requests.get(url, stream=True) as response:
