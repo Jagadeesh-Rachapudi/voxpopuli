@@ -1,3 +1,7 @@
+ro_2019.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/ro_2019.tar
+ro_2020.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/ro_2020.tar
+hu_2019.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/hu_2019.tar
+hu_2020.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/hu_2020.tar
 cs_2019.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/cs_2019.tar
 cs_2020.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/cs_2020.tar
 nl_2019.tar: https://dl.fbaipublicfiles.com/voxpopuli/audios/nl_2019.tar
