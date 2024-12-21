@@ -7,7 +7,7 @@ import shutil
 
 
 # Specify the path to the urls.txt file here
-URLS_FILE_PATH = "../10k_urls_full.txt"
+URLS_FILE_PATH = "../10k_urls_full"
 
 def get_args():
     parser = argparse.ArgumentParser()
