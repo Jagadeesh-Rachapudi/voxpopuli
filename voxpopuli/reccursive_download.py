@@ -24,10 +24,10 @@ def check_jobs():
 def start_download():
     """Start the download_audios.py script using nohup."""
     try:
-        # Command to run the download_audios.py script with nohup for the 10k subset
-        command = "nohup python download_audios.py --root ../voxpopuli --subset 10k > download_log.txt 2>&1 &"
+        # Command to run the download_audios.py script with nohup
+        command = "nohup python download_audios.py --root ../voxpopuli > download_log.txt 2>&1 &"
         os.system(command)
-        print("Started download_audios.py script for the 10k subset.")
+        print("Started download_audios.py script.")
     except Exception as e:
         print(f"Error starting download: {e}")
 
@@ -35,7 +35,7 @@ def main():
     while True:
         # Check for active jobs
         if not check_jobs():
-            print("No active jobs found. Restarting download_audios.py for the 10k subset...")
+            print("No active jobs found. Restarting download_audios.py...")
             start_download()
         else:
             print("Active job found. No action needed.")
