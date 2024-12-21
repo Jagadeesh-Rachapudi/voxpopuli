@@ -5,6 +5,7 @@ import requests
 from tqdm import tqdm
 import shutil
 
+
 # Specify the path to the urls.txt file here
 URLS_FILE_PATH = "../urls.txt"
 
@@ -17,9 +18,10 @@ def get_args():
 
 def download_url(url, out_dir, filename):
     out_path = os.path.join(out_dir, filename)
-    # if os.path.exists(out_path):
-    #     print(f"Skipping {filename} (already downloaded)")
-    #     return True
+    # Uncomment this if you want to skip already downloaded files
+    if os.path.exists(out_path):
+        print(f"Skipping {filename} (already downloaded)")
+        return True
 
     try:
         with requests.get(url, stream=True) as response:
@@ -40,6 +42,16 @@ def download_url(url, out_dir, filename):
     except Exception as e:
         print(f"Error downloading {filename}: {e}")
         return False
+
+def extract_archive(file_path, out_dir):
+    """Extract the given archive and place the files in the specified directory."""
+    try:
+        shutil.unpack_archive(file_path, out_dir)
+        print(f"Extracted: {file_path}")
+        os.remove(file_path)  # Remove the archive after extraction
+        print(f"Removed archive: {file_path}")
+    except Exception as e:
+        print(f"Error extracting {file_path}: {e}")
 
 def download(args):
     out_root = Path(args.root) / "raw_audios"
@@ -72,9 +84,16 @@ def download(args):
         filename = filename.strip()
         url = url.strip()
 
+        tar_path = out_root / filename
+
+        # Download the file
         success = download_url(url, out_root.as_posix(), filename)
 
         if success:
+            # Extract the archive and remove the .tar file
+            extract_archive(tar_path, out_root.as_posix())
+
+            # Remove the first line from urls.txt after successful download
             lines.pop(0)
             with open(urls_file, "w") as f:
                 f.writelines(lines)
